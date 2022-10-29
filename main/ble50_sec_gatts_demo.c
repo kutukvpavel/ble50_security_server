@@ -57,10 +57,10 @@ float measured_value = 0;
 #define EXT_ADV_DATA_NAME_LENGTH_IDX 10
 #define EXT_ADV_DATA_NAME_IDX 12
 static const uint8_t ext_adv_raw_template[] = {
-        0x02, 0x01, 0x06,
-        0x02, 0x0a, 0xeb,
-        0x03, 0x03, _HB(SEC_SERVICE_UUID), _LB(SEC_SERVICE_UUID),
-        0x0B, 0X09, 'M', 'S', 'U', '_', 'E', 'n', 'd', 'o', 'H', '2'
+    0x02, 0x01, 0x06,
+    0x02, 0x0a, 0xeb,
+    0x03, 0x03, _HB(SEC_SERVICE_UUID), _LB(SEC_SERVICE_UUID),
+    0x0B, 0X09, 'M', 'S', 'U', '_', 'E', 'n', 'd', 'o', 'H', '2'
 };
 static uint8_t* ext_adv_raw_data = NULL;
 static size_t ext_adv_raw_data_len = 0;
@@ -333,7 +333,8 @@ static void gap_event_handler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param
     switch (event) {
     case ESP_GAP_BLE_EXT_ADV_SET_PARAMS_COMPLETE_EVT:
         ESP_LOGI(TAG,"ESP_GAP_BLE_EXT_ADV_SET_PARAMS_COMPLETE_EVT status %d",  param->ext_adv_set_params.status);
-        esp_ble_gap_config_ext_adv_data_raw(EXT_ADV_HANDLE,  ext_adv_raw_data_len, ext_adv_raw_data);
+        esp_ble_gap_config_ext_adv_data_raw(EXT_ADV_HANDLE, ext_adv_raw_data_len, ext_adv_raw_data
+            /*sizeof(ext_adv_raw_template), &ext_adv_raw_template[0]*/);
         break;
     case ESP_GAP_BLE_EXT_ADV_DATA_SET_COMPLETE_EVT:
          ESP_LOGI(TAG,"ESP_GAP_BLE_EXT_ADV_DATA_SET_COMPLETE_EVT status %d",  param->ext_adv_data_set.status);
@@ -590,12 +591,12 @@ esp_err_t ble_init(const char* name)
     }
     else
     {
-        esp_ble_gap_set_device_name(name);
+        //esp_ble_gap_set_device_name(name);
         ext_adv_raw_data_len = EXT_ADV_DATA_NAME_IDX + name_len;
         ext_adv_raw_data = (uint8_t*)malloc(ext_adv_raw_data_len);
         if (!ext_adv_raw_data) return ESP_ERR_NO_MEM;
         memcpy(ext_adv_raw_data, ext_adv_raw_template, EXT_ADV_DATA_NAME_IDX);
-        memcpy(ext_adv_raw_data, name, name_len);
+        memcpy(ext_adv_raw_data + EXT_ADV_DATA_NAME_IDX, name, name_len);
         ext_adv_raw_data[EXT_ADV_DATA_NAME_LENGTH_IDX] = name_len + 1; //+ entry type byte
     }
 
@@ -678,5 +679,7 @@ void app_main(void)
         vTaskDelay(pdMS_TO_TICKS(1000));
         if (++measured_value > 10) measured_value = 0;
         my_ble_notify_value_changed();
+        //vTaskDelay(pdMS_TO_TICKS(10000));
+        //esp_light_sleep_start();
     }
 }
