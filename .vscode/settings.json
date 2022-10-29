@@ -1,0 +1,12 @@
+{
+    "cmake.configureOnOpen": false,
+    "idf.adapterTargetName": "esp32s3",
+    "idf.openOcdConfigs": [
+        "board/esp32s3-builtin.cfg"
+    ],
+    "idf.flashType": "UART",
+    "taskExplorer.enableMake": false,
+    "search.exclude": {
+      "**/build": true
+    }
+}

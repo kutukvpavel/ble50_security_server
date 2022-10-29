@@ -1,0 +1,14 @@
+2022-10-29 01:00:44,325 - Debug Adapter (main) - CRITICAL - Debug adapter -> Extension: DEBUG_ADAPTER_STARTED
+2022-10-29 01:00:44,326 - Debug Adapter (main) - CRITICAL - Debug adapter -> Extension: DEBUG_ADAPTER_READY2CONNECT
+2022-10-29 01:00:51,758 - Debug Adapter (main) - ERROR - int() argument must be a string, a bytes-like object or a number, not 'NoneType'
+Traceback (most recent call last):
+  File "/home/paul/.vscode/extensions/espressif.esp-idf-extension-1.5.0/esp_debug_adapter/debug_adapter/command_processor.py", line 144, in on_launch_request
+    self.da.run(start=(not self.da.state.no_debug))
+  File "/home/paul/.vscode/extensions/espressif.esp-idf-extension-1.5.0/esp_debug_adapter/debug_adapter/debug_adapter.py", line 825, in run
+    self.on_target_stopped(rsn)
+  File "/home/paul/.vscode/extensions/espressif.esp-idf-extension-1.5.0/esp_debug_adapter/debug_adapter/debug_adapter.py", line 672, in on_target_stopped
+    self.update_threads()
+  File "/home/paul/.vscode/extensions/espressif.esp-idf-extension-1.5.0/esp_debug_adapter/debug_adapter/debug_adapter.py", line 733, in update_threads
+    self.thread_selected = int(gdb_resp[0])
+TypeError: int() argument must be a string, a bytes-like object or a number, not 'NoneType'
+2022-10-29 01:00:51,845 - Debug Adapter (main) - CRITICAL - Debug adapter -> Extension: DEBUG_ADAPTER_STOPPED
